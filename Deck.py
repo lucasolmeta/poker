@@ -1,4 +1,4 @@
-import Card
+from Card import Card
 import random
 
 class Deck:
@@ -8,6 +8,12 @@ class Deck:
 
     def shuffle(self):
         random.shuffle(self.cards)
+    
+    def burn(self):
+        try:
+            del self.cards[-1]
+        except:
+            raise IndexError('Deck only contains 52 cards!')
 
     def deal(self, num_cards):
         try:

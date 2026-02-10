@@ -1,4 +1,4 @@
-import Card
+from Card import Card
 
 class Board:
     def __init__(self, cards: list) -> None:
@@ -11,13 +11,22 @@ class Board:
         self.cards[:3] = cards
 
     def set_turn(self, card: Card) -> None:
-        self.cards[3] = card
+        if isinstance(card, Card):
+            self.cards[3] = card
+        else:
+            raise TypeError('Input must be a card!')
 
     def set_river(self, card: Card) -> None:
-        self.cards[4] = card
+        if isinstance(card, Card):
+            self.cards[4] = card
+        else:
+            raise TypeError('Input must be a card!')
 
     def card(self, n: int):
         return self.cards[n]
     
     def cards(self):
         return self.cards
+    
+    def to_str(self):
+        return ', '.join([card.to_str() for card in self.cards if card is not None])
