@@ -2,24 +2,41 @@ import random
 import math
 
 class Card:
-    def __init__(self):
-        self.rank = self.init_rank()
-        self.suit = self.init_suit()
-
-    def __init__(self, rank, suit):
+    def __init__(self, rank: int, suit: int):
         self.rank = rank
         self.suit = suit
     
-    def init_rank(self) -> int:
-        rank = math.floor(random.random() * 13) + 2
-        return rank
+    def rank(self):
+        return self.rank
     
-    def init_suit(self) -> int:
-        suit = math.floor(random.random() * 4)
-        return suit
-    
-    def suit(self) -> int:
+    def suit(self):
         return self.suit
     
-    def rank(self) -> int:
-        return self.rank
+    def to_str(self):
+        ranks = {
+            2: '2',
+            3: '3',
+            4: '4',
+            5: '5',
+            6: '6',
+            7: '7',
+            8: '8',
+            9: '9',
+            10: '10',
+            11: 'J',
+            12: 'Q',
+            13: 'K',
+            14: 'A'
+        }
+
+        suits = {
+            0: 'Clubs',
+            1: 'Diamonds',
+            2: 'Hearts',
+            3: 'Spades',
+        }
+
+        rank = ranks[self.rank]
+        suit = suits[self.suit]
+
+        return f'{rank} of {suit}'

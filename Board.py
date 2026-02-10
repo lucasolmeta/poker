@@ -1,29 +1,23 @@
 import Card
 
 class Board:
-    def __init__(self):
-        self.cardOne = Card()
-        self.cardTwo = Card()
-        self.cardThree = Card()
-        self.cardFour = Card()
-        self.cardFive = Card()
+    def __init__(self, cards: list) -> None:
+        if len(cards) != 3:
+            raise IndexError('Please submit 3 Cards!')
+        if any([not isinstance(card, Card) for card in cards]):
+            raise TypeError('All inputs must be Cards!')
+        
+        self.cards = [None] * 5
+        self.cards[:3] = cards
 
-    def card_one(self):
-        return self.cardOne
-    
-    def card_two(self):
-        return self.cardTwo
-    
-    def card_three(self):
-        return self.cardThree
-    
-    def card_four(self):
-        return self.cardFour
-    
-    def card_five(self):
-        return self.cardFive
+    def set_turn(self, card: Card) -> None:
+        self.cards[3] = card
+
+    def set_river(self, card: Card) -> None:
+        self.cards[4] = card
+
+    def card(self, n: int):
+        return self.cards[n]
     
     def cards(self):
-        cards = [self.cardOne, self.cardTwo, self.cardThree, self.cardFour, self.cardFive]
-        
-        return cards
+        return self.cards
