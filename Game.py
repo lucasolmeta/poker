@@ -24,10 +24,13 @@ class Game:
             if self.players[ action_on ].folded():
                 action_on = (action_on + 1) % len(self.players)
                 continue
-
+            
+            print(f'Player {action_on + 1}:')
+            print( self.players[ action_on ].to_str() )
             action = self.players[ action_on ].get_action( call_amount )
 
             if action[0] == 'fold':
+                action_on = (action_on + 1) % len(self.players)
                 continue
             elif action[0] == 'check':
                 if last_aggressor == -1:
