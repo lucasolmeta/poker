@@ -17,6 +17,9 @@ class Deck:
 
     def deal(self, num_cards):
         try:
-            return [self.cards.pop() for _ in range(num_cards)]
+            if num_cards == 1:
+                return self.cards.pop()
+            else:
+                return [self.cards.pop() for _ in range(num_cards)]
         except:
             raise IndexError('Deck only contains 52 cards!')

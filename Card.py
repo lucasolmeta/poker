@@ -3,14 +3,14 @@ import math
 
 class Card:
     def __init__(self, rank: int, suit: int):
-        self.rank = rank
-        self.suit = suit
+        self.r = rank
+        self.s = suit
     
     def rank(self):
-        return self.rank
+        return self.r
     
     def suit(self):
-        return self.suit
+        return self.s
     
     def to_str(self):
         ranks = {
@@ -36,7 +36,7 @@ class Card:
             3: 'Spades',
         }
 
-        rank = ranks[self.rank]
-        suit = suits[self.suit]
+        rank = ranks[self.r]
+        suit = suits[self.s]
 
         return f'{rank} of {suit}'

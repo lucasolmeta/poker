@@ -7,7 +7,7 @@ class Player:
         if any([not isinstance(card, Card) for card in cards]):
             raise TypeError('All inputs must be Cards!')
         
-        self.cards = cards
+        self.card_list = cards
         self.balance = 1000
         self.is_folded = False
 
@@ -35,13 +35,13 @@ class Player:
                         return ('raise', int(raise_amount))
     
     def card(self, n: int):
-        return self.cards[n]
+        return self.card_list[n]
     
     def cards(self):
-        return self.cards
+        return self.card_list
     
     def folded(self):
         return self.is_folded
     
     def to_str(self):
-        return ", ".join([card.to_str() for card in self.cards if card is not None])
+        return ", ".join([card.to_str() for card in self.card_list if card is not None])
