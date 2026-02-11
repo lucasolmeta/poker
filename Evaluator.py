@@ -8,7 +8,7 @@ class Evaluator:
 
     def evaluate_hand(self, player: Player, board: Board):
         cards = player.cards() + board.cards()
-        cards.sort(key=lambda card: (card.rank(), card.suit()))
+        cards.sort(key=lambda card: (card.rank(), card.suit()), reverse=True)
         
         if score := self.straight_flush( cards ): return score
         if score := self.four_of_kind( cards ): return score
@@ -33,11 +33,12 @@ class Evaluator:
         if target_suit is None:
             return
         
-        s_cards = [c for c in cards if c.suit == target_suit]
+        s_cards = [c for c in cards if c.suit() == target_suit]
+        unique_ranks = sorted(list(set(c for c in s_cards)), reverse=True)
         
-        for i in range(len(s_cards) - 4):
-            if s_cards[i].rank() - s_cards[i+4].rank() == 4:
-                high_card = s_cards[i]
+        for i in range(len(unique_ranks) - 4):
+            if unique_ranks[i] - unique_ranks[i+4] == 4:
+                high_card = unique_ranks[i]
                 
                 if high_card == 14:
                     return 9 << 40
@@ -45,7 +46,7 @@ class Evaluator:
                 return (8 << 40) + (high_card << 32)
 
         wheel_ranks = {14, 5, 4, 3, 2}
-        if wheel_ranks.issubset(set(s_cards)):
+        if wheel_ranks.issubset(set(unique_ranks)):
             return (8 << 40) + (5 << 32)
 
         return 0
@@ -79,14 +80,16 @@ class Evaluator:
                 return score
     
     def straight(self, cards: list):
-        for i in range(len(cards) - 4):
-            if cards[i].rank() - cards[i+4].rank() == 4:
-                high_card = cards[i]
+        unique_ranks = sorted(list(set(c.rank() for c in cards)), reverse=True)
+
+        for i in range(len(unique_ranks) - 4):
+            if unique_ranks[i] - unique_ranks[i+4] == 4:
+                high_card = unique_ranks[i]
                 
-                return (8 << 40) + (high_card << 32)
+                return (4 << 40) + (high_card << 32)
             
         wheel_ranks = {14, 5, 4, 3, 2}
-        if wheel_ranks.issubset(set(cards)):
+        if wheel_ranks.issubset(set(unique_ranks)):
             return (8 << 40) + (5 << 32)
     
     def three_of_kind(self, cards: list):
