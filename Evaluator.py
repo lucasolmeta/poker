@@ -126,7 +126,7 @@ class Evaluator:
         return 0
             
     def high_card(self, cards: list):
-        ranks = cards[:5]
+        ranks = [card.rank() for card in cards[:5]]
 
         score = 0
         for i, rank in enumerate(ranks):
