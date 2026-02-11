@@ -1,12 +1,13 @@
 from Player import Player
 from Board import Board
 from collections import Counter
+from Deck import Deck
 
 class Evaluator:
     def __init__(self):
         pass
 
-    def evaluate_hand(self, player: Player, board: Board):
+    def score_hand(self, player: Player, board: Board):
         cards = player.cards() + board.cards()
         cards.sort(key=lambda card: (card.rank(), card.suit()), reverse=True)
         
@@ -19,7 +20,6 @@ class Evaluator:
         if score := self.two_pair( cards ): return score
         if score := self.pair( cards ): return score
         return self.high_card( cards )
-
 
     def straight_flush(self, cards: list):
         suit_counts = Counter(card.suit() for card in cards)
@@ -135,3 +135,20 @@ class Evaluator:
         for i, rank in enumerate(ranks):
             score += rank << (8 * (4 - i))
         return score
+
+    def win_prob(self, cards: list, sim_num, opps):
+        wins = 0
+        for _ in range( sim_num ):
+            deck = Deck( cards )
+
+            board = Board( deck.deal(3) )
+            board.set_turn( deck.deal(1) )
+            board.set_river( deck.deal(1) )
+
+            players = [Player( deck.deal(2) )] * opps
+            odds = [self.score_hand(player, board) for player in players]
+
+            if self.score_hand(cards, board) >= max(odds):
+                wins += 1
+        
+        return wins / sim_num

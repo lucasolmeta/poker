@@ -2,9 +2,13 @@ from Card import Card
 import random
 
 class Deck:
-    def __init__(self):
+    def __init__(self, exclude: list = None):
         self.cards = [Card(r, s) for r in range(2, 15) for s in range(4)]
         self.shuffle()
+
+        if exclude:
+            for card in exclude:
+                self.cards.remove(card)
 
     def shuffle(self):
         random.shuffle(self.cards)
@@ -23,3 +27,8 @@ class Deck:
                 return [self.cards.pop() for _ in range(num_cards)]
         except:
             raise IndexError('Deck only contains 52 cards!')
+    
+    def __eq__(self, other):
+        if isinstance(other, Card):
+            return self.r == other.r and self.s == other.s
+        return False
