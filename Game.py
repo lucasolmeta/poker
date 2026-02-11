@@ -25,8 +25,11 @@ class Game:
                 action_on = (action_on + 1) % len(self.players)
                 continue
             
+            print('-----')
             print(f'Player {action_on + 1}:')
             print( self.players[ action_on ].to_str() )
+            print('-----')
+
             action = self.players[ action_on ].get_action( call_amount )
 
             if action[0] == 'fold':
@@ -69,4 +72,6 @@ class Game:
         return
 
     def print_board(self):
-        print( f'Board: {self.board.to_str()}' )
+        print('-----')
+        print('BOARD:')
+        print(self.board.to_str())
