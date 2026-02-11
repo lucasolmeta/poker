@@ -34,8 +34,8 @@ class Evaluator:
             return
         
         s_cards = [c for c in cards if c.suit() == target_suit]
-        unique_ranks = sorted(list(set(c for c in s_cards)), reverse=True)
-        
+        unique_ranks = sorted(list(set(c.rank() for c in s_cards)), reverse=True)  
+
         for i in range(len(unique_ranks) - 4):
             if unique_ranks[i] - unique_ranks[i+4] == 4:
                 high_card = unique_ranks[i]
@@ -90,7 +90,7 @@ class Evaluator:
             
         wheel_ranks = {14, 5, 4, 3, 2}
         if wheel_ranks.issubset(set(unique_ranks)):
-            return (8 << 40) + (5 << 32)
+            return (4 << 40) + (5 << 32)
     
     def three_of_kind(self, cards: list):
         rank_counts = Counter(card.rank() for card in cards)
