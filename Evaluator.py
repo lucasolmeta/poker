@@ -138,6 +138,8 @@ class Evaluator:
 
     def win_prob(self, cards: list, sim_num, opps):
         wins = 0
+        ties = 0
+
         for _ in range( sim_num ):
             deck = Deck( cards )
 
@@ -145,10 +147,15 @@ class Evaluator:
             board.set_turn( deck.deal(1) )
             board.set_river( deck.deal(1) )
 
-            players = [Player( deck.deal(2) )] * opps
+            players = [Player( deck.deal(2) ) for _ in range(opps)]
             odds = [self.score_hand(player, board) for player in players]
 
-            if self.score_hand(cards, board) >= max(odds):
+            player = Player(cards)
+            score = self.score_hand(player, board)
+
+            if score > max(odds):
                 wins += 1
+            elif score == max(odds):
+                ties += 1
         
-        return wins / sim_num
+        return wins / sim_num, ties / sim_num

@@ -40,3 +40,8 @@ class Card:
         suit = suits[self.s]
 
         return f'{rank} of {suit}'
+    
+    def __eq__(self, other):
+        if isinstance(other, Card):
+            return self.r == other.r and self.s == other.s
+        return False

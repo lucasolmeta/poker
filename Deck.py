@@ -27,8 +27,3 @@ class Deck:
                 return [self.cards.pop() for _ in range(num_cards)]
         except:
             raise IndexError('Deck only contains 52 cards!')
-    
-    def __eq__(self, other):
-        if isinstance(other, Card):
-            return self.r == other.r and self.s == other.s
-        return False
