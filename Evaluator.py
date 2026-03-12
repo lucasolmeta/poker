@@ -9,6 +9,10 @@ class Evaluator:
         pass
 
     def score_hand(self, player: Player, board: Board):
+        """
+        Returns score used to evaluate strength of hand
+        """
+
         cards = player.cards() + board.cards()
         cards.sort(key=lambda card: (card.rank(), card.suit()), reverse=True)
         
