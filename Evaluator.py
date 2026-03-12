@@ -266,15 +266,15 @@ class Evaluator:
 
         # Create plot
 
-        plt.plot(range( 1 , sim_num + 1 ), win_probs, label=f'Final Win: {final_win:.2%}')
-        plt.plot(range( 1 , sim_num + 1 ), tie_probs, label=f'Final Tie: {final_tie:.2%}', color='lightblue')
+        plt.plot(range( 1 , sim_num + 1 ), win_probs, label=f'Final Win Percentage: {final_win:.2%}')
+        plt.plot(range( 1 , sim_num + 1 ), tie_probs, label=f'Final Tie Percentage: {final_tie:.2%}', color='lightblue')
         plt.xlabel('Simulation #')
         plt.ylabel('Win Probability')
         plt.title(f'Win Probability Over Time For {cards[0].to_str()}, {cards[1].to_str()}')
         plt.ylim(0, 1)
         plt.axhline(y=1/(1+opps), color='gray', linestyle='--', alpha=0.7)
         plt.yticks([0, 0.5, 1, 1/(1+opps)], ['0%', '50%', '100%', f'{round(1/(1+opps)*100)}%'])
-        plt.legend(handlelength=0, handletextpad=0)     
+        plt.legend(handlelength=0.5)     
 
         # Return final win and tie probabilities
 
