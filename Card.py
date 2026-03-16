@@ -44,6 +44,22 @@ class Card:
 
         return cls(ranks[r_str], suits[s_str])
     
+    @classmethod
+    def from_rlcard_str(cls, card_str: str):
+        ranks = {
+            '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, 
+            '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14
+        }
+        suits = {
+            'C': 0, 'D': 1, 'H': 2, 'S': 3
+        }
+        
+        # RLCard format is Suit then Rank (e.g., 'SA')
+        s_str = card_str[0].upper()
+        r_str = card_str[1].upper()
+
+        return cls(ranks[r_str], suits[s_str])
+    
     def __eq__(self, other):
         if isinstance(other, Card):
             return self.r == other.r and self.s == other.s

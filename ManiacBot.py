@@ -15,9 +15,6 @@ class ManiacBot( BasePokerPlayer ):
         if can_raise and action_roll < 0.50:
             min_raise = raise_action[0]['amount']['min']
             max_raise = raise_action[0]['amount']['max']
-            
-            # Cap the raise at 3x the minimum to preserve stack depths
-            
             cap = min(max_raise, min_raise * 3)
             raise_amnt = random.randint(min_raise, cap)
             return 'raise', raise_amnt
