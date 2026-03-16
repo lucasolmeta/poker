@@ -2,7 +2,6 @@ from Player import Player
 from Board import Board
 from collections import Counter
 from Deck import Deck
-import matplotlib.pyplot as plt
 
 class Evaluator:
     def __init__(self):
@@ -187,9 +186,9 @@ class Evaluator:
             score += rank << (8 * (4 - i))
         return score
 
-    def win_prob(self, cards: list, sim_num: int, opps: int, board=None):
+    def hand_equity(self, cards: list, sim_num: int, opps: int, board=None):
         """
-        Runs a monte-carlo simulation to approximate win probability of a given hand
+        Runs a monte-carlo simulation to estimate equity of a given hand
         """
 
         # Default the board to nothing if no parameter passed
@@ -199,22 +198,11 @@ class Evaluator:
 
         # Initialize wins and ties for the monte carlo
 
-        wins = 0
-        ties = 0
-
-        # Track win and tie probabilities for the monte carlo graph
-
-        win_probs = []
-        tie_probs = []
+        total_equity = 0.0
 
         # Run the simulation sim_num times
 
         for i in range( sim_num ):
-
-            # Occasional update print statements
-
-            if sim_num >= 10 and i % (sim_num // 10) == 0:
-                print(f'{round((i-1)/sim_num*100,2)}% Complete')
 
             # Make a new deck excluding player's cards and those on the board
 
@@ -251,31 +239,18 @@ class Evaluator:
 
             # Augment win and tie totals and append to the lists for the monte carlo graph
 
-            if score > max(odds):
-                wins += 1
-            elif score == max(odds):
-                ties += 1
+            max_opp_score = max(odds)
 
-            win_probs.append( wins / (i+1) )
-            tie_probs.append( ties / (i+1) )
+            # If win: add 1 to equity, if tie: split between all opponents
 
-        # Calculate final percentages
+            if score > max_opp_score:
+                total_equity += 1.0
+            elif score == max_opp_score:
+                tie_count = odds.count(score)
+                total_equity += 1.0 / ( 1 + tie_count )
 
-        final_win = wins / sim_num
-        final_tie = ties / sim_num
+        # Calculate and return average equity per hand
 
-        # Create plot
+        final_equity = total_equity / sim_num
 
-        plt.plot(range( 1 , sim_num + 1 ), win_probs, label=f'Final Win Percentage: {final_win:.2%}')
-        plt.plot(range( 1 , sim_num + 1 ), tie_probs, label=f'Final Tie Percentage: {final_tie:.2%}', color='lightblue')
-        plt.xlabel('Simulation #')
-        plt.ylabel('Win Probability')
-        plt.title(f'Win Probability Over Time For {cards[0].to_str()}, {cards[1].to_str()}')
-        plt.ylim(0, 1)
-        plt.axhline(y=1/(1+opps), color='gray', linestyle='--', alpha=0.7)
-        plt.yticks([0, 0.5, 1, 1/(1+opps)], ['0%', '50%', '100%', f'{round(1/(1+opps)*100)}%'])
-        plt.legend(handlelength=0.5)     
-
-        # Return final win and tie probabilities
-
-        return final_win, final_tie
+        return final_equity
