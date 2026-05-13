@@ -57,7 +57,7 @@ class PokerAI( BasePokerPlayer ):
 
         # Calculate equity for current hand
 
-        equity = self.evaluator.hand_equity( my_cards, 1000, active_opps, board=board )
+        equity = self.evaluator.hand_equity( my_cards, 10000, active_opps, board=board )
 
         # Calculate advantage
 

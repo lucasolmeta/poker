@@ -1,17 +1,14 @@
 from pypokerengine.api.game import setup_config, start_poker
 from PokerAI import PokerAI
 from CallBot import CallBot
-from NitBot import NitBot
-from TAGBot import TAGBot
-from ManiacBot import ManiacBot
 from RandomBot import RandomBot
 
 if __name__ == '__main__':
 
     # Simulation parameters
     
-    num_hands = 500
-    initial_stack = 1000000000
+    num_hands = 50 
+    initial_stack = 10000
     small_blind = 10
     big_blind = 20
 
@@ -22,10 +19,9 @@ if __name__ == '__main__':
     # Register the players
     
     config.register_player(name='EV_Bot', algorithm=PokerAI())
-    config.register_player(name='Tight Passive Bot', algorithm=NitBot())
-    config.register_player(name='Tight Aggressive Bot', algorithm=TAGBot())
-    config.register_player(name='Maniac Bot', algorithm=ManiacBot())
-    config.register_player(name='Random Bot', algorithm=RandomBot())
+    config.register_player(name='Call_Station', algorithm=CallBot())
+    config.register_player(name='Random_Maniac_1', algorithm=RandomBot())
+    config.register_player(name='Random_Maniac_2', algorithm=RandomBot())
 
     # Run the simulation
     
