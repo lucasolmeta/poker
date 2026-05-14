@@ -1,8 +1,8 @@
-from Player import Player
-from Board import Board
 from collections import Counter
-from Deck import Deck
-import matplotlib.pyplot as plt
+
+from .Board import Board
+from .Deck import Deck
+from .Player import Player
 
 class Evaluator:
     def __init__(self):
@@ -187,7 +187,7 @@ class Evaluator:
             score += rank << (8 * (4 - i))
         return score
 
-    def hand_equity(self, cards: list, sim_num: int, opps: int, board=None, graph=False ):
+    def hand_equity( self, cards: list, sim_num: int, opps: int, board=None ):
         """
         Runs a monte-carlo simulation to approximate equity of a given hand with a given board
         """
@@ -257,19 +257,6 @@ class Evaluator:
 
         final_equity = total_equity / sim_num
 
-        # Create plot
-
-        if graph:
-            plt.plot(range( 1 , sim_num + 1 ), equity_tracker, label=f'Final Win Percentage: {final_equity:.2%}')
-            plt.xlabel('Simulation #')
-            plt.ylabel('Hand Equity')
-            plt.title(f'Hand Equity Over Time For {cards[0].to_str()}, {cards[1].to_str()}')
-            plt.ylim(0, 1)
-            plt.axhline(y=1/(1+opps), color='gray', linestyle='--', alpha=0.7)
-            plt.yticks([0, 0.5, 1, 1/(1+opps)], ['0%', '50%', '100%', f'{round(1/(1+opps)*100)}%'])
-            plt.legend(handlelength=0.5)     
-            plt.show()
-
         # Return final win and tie probabilities
 
-        return final_equity
+        return final_equity, equity_tracker

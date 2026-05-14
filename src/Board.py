@@ -1,4 +1,4 @@
-from Card import Card
+from .Card import Card
 
 class Board:
     def __init__(self, cards: list) -> None:
