@@ -284,9 +284,6 @@ class Evaluator:
 
             equity_tracker.append(total_equity / (i + 1))
 
-            if sim_num >= 10 and (i + 1) % (sim_num // 10) == 0:
-                print(f'{round(100 * (i + 1) / sim_num, 2)}% Complete')
-
         # Calculate and return average equity per hand
 
         final_equity = total_equity / sim_num
