@@ -14,7 +14,7 @@ def plot_equity_convergence(sim_num, equity_tracker, final_equity, cards, opps):
     lower_plot = np.clip(lower_bound, 0.0, 1.0)
     upper_plot = np.clip(upper_bound, 0.0, 1.0)
 
-    plt.plot(n_iterations, p_hat, label=f"Final Win Percentage: {final_equity:.2%}")
+    plt.plot(n_iterations, p_hat, label=f"Final Hand Equity: {final_equity:.2%}")
     plt.fill_between(
         n_iterations,
         lower_plot,
