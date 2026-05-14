@@ -1,7 +1,8 @@
 from collections import Counter
+import random
 
 from .board import Board
-from .deck import Deck
+from .card import Card
 from .player import Player
 
 class Evaluator:
@@ -202,36 +203,69 @@ class Evaluator:
         total_equity = 0
         equity_tracker = []
 
+        # Build one list of every card still available; hero and known board are excluded
+
+        known_cards = {(c.rank(), c.suit()) for c in cards}
+        known_cards.update((c.rank(), c.suit()) for c in board)
+
+        # Build deck pool of all cards still available
+
+        deck_pool = [
+            Card(r, s)
+            for r in range(2, 15)
+            for s in range(4)
+            if (r, s) not in known_cards
+        ]
+
+        # Count how many cards to sample each run: missing streets plus two per opponent
+
+        n_board = len(board)
+        if n_board not in (0, 3, 4, 5):
+
+            # Only empty board, flop, turn plus river card, or full board are valid here
+
+            raise ValueError(
+                f"hand_equity requires 0, 3, 4, or 5 board cards; got {n_board}"
+            )
+
+        n_from_sample_board = 5 - n_board
+        sample_k = n_from_sample_board + 2 * opps
+
         # Run the simulation sim_num times
 
-        for i in range( sim_num ):
+        for i in range(sim_num):
 
-            # Make a new deck excluding player's cards and those on the board
+            # Pull every random street and every opponent hole card in a single sample
 
-            deck = Deck( cards + board )
+            sampled = random.sample(deck_pool, sample_k)
+            new_streets = sampled[:n_from_sample_board]
+            opp_holes = sampled[n_from_sample_board:]
 
             # Create the simulation board
 
-            if len(board) == 0:
-                sim_board = Board( deck.deal(3) )
-                sim_board.set_turn( deck.deal(1) )
-                sim_board.set_river( deck.deal(1) )
-            elif len(board) == 3:
-                sim_board = Board( board[:3] )
-                sim_board.set_turn( deck.deal(1) )
-                sim_board.set_river( deck.deal(1) )
-            elif len(board) == 4:
-                sim_board = Board( board[:3] )
-                sim_board.set_turn( board[3] )
-                sim_board.set_river( deck.deal(1) )
-            elif len(board) == 5:
-                sim_board = Board( board[:3] )
-                sim_board.set_turn( board[3] )
-                sim_board.set_river( board[4] )
+            if n_board == 0:
+                sim_board = Board(new_streets[:3])
+                sim_board.set_turn(new_streets[3])
+                sim_board.set_river(new_streets[4])
+            elif n_board == 3:
+                sim_board = Board(board[:3])
+                sim_board.set_turn(new_streets[0])
+                sim_board.set_river(new_streets[1])
+            elif n_board == 4:
+                sim_board = Board(board[:3])
+                sim_board.set_turn(board[3])
+                sim_board.set_river(new_streets[0])
+            else:
+                sim_board = Board(board[:3])
+                sim_board.set_turn(board[3])
+                sim_board.set_river(board[4])
 
             # Create hands for each player and score each of their hands
 
-            players = [Player( deck.deal(2) ) for _ in range(opps)]
+            players = [
+                Player(opp_holes[2 * j : 2 * (j + 1)])
+                for j in range(opps)
+            ]
             odds = [self.score_hand(player, sim_board) for player in players]
 
             # Initialize player object with passed hand and score it
