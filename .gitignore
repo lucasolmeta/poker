@@ -3,5 +3,6 @@
 __pycache__/
 **/__pycache__/
 .venv/
-test*
+testScore.py
+testGame.py
 .cursor
