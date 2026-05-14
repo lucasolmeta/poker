@@ -1,8 +1,8 @@
 from collections import Counter
 
-from .Board import Board
-from .Deck import Deck
-from .Player import Player
+from .board import Board
+from .deck import Deck
+from .player import Player
 
 class Evaluator:
     def __init__(self):

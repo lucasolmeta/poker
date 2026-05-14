@@ -2,10 +2,10 @@
 
 import pytest
 
-from src.Board import Board
-from src.Card import Card
-from src.Evaluator import Evaluator
-from src.Player import Player
+from src.board import Board
+from src.card import Card
+from src.evaluator import Evaluator
+from src.player import Player
 
 
 def C(rank: int, suit: int) -> Card:
